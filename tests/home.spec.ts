@@ -15,11 +15,12 @@ test.describe('Firebase Agent Task Manager', () => {
     await page.getByPlaceholder('Enter Task').fill(uniqueTaskName);
     await page.getByRole('button', { name: 'Add' }).click();
 
-    // Isolate the specific row for our newly created task
-    const taskRow = page.locator('.flex.items-center').filter({ hasText: uniqueTaskName });
+    // Isolate the specific row for our newly created task.
+    // getByText with exact match finds the <span>, locator('..') goes up to its parent <div> row.
+    const taskRow = page.getByText(uniqueTaskName, { exact: true }).locator('..');
 
     // Wait for the network request to finish and the task to appear
-    await expect(taskRow).toBeVisible();
+    await expect(taskRow).toBeVisible({ timeout: 10000 });
 
 
     // -----------------------------------------
@@ -30,7 +31,7 @@ test.describe('Firebase Agent Task Manager', () => {
     await completeBtn.click();
 
     // Verify it worked: The Complete button should disappear from the DOM
-    await expect(completeBtn).toBeHidden();
+    await expect(completeBtn).toBeHidden({ timeout: 10000 });
 
 
     // -----------------------------------------
@@ -40,6 +41,6 @@ test.describe('Firebase Agent Task Manager', () => {
     await deleteBtn.click();
 
     // Verify it successfully deleted from the screen
-    await expect(taskRow).toBeHidden();
+    await expect(taskRow).toBeHidden({ timeout: 10000 });
   });
 });

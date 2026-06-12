@@ -22,6 +22,7 @@ export default function TaskList({
       {tasks.map((task) => (
         <div
           key={task.id}
+          data-testid={`task-${task.title}`}
           className="flex items-center gap-3 mb-3"
         >
           <span
