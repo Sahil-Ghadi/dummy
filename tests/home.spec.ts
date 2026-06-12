@@ -16,7 +16,7 @@ test.describe('Firebase Agent Task Manager', () => {
     await page.getByRole('button', { name: 'Add' }).click();
 
     // Isolate the specific row for our newly created task
-    const taskRow = page.locator('div').filter({ hasText: uniqueTaskName }).first();
+    const taskRow = page.locator('.flex.items-center').filter({ hasText: uniqueTaskName });
 
     // Wait for the network request to finish and the task to appear
     await expect(taskRow).toBeVisible();
