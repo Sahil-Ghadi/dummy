@@ -11,13 +11,11 @@ test.describe('Firebase Agent Task Manager', () => {
     // -----------------------------------------
     // TEST CREATE
     // -----------------------------------------
-    // Find the input by its placeholder and type
-    await page.getByPlaceholder('Enter Task').fill(uniqueTaskName);
-    await page.getByRole('button', { name: 'Add' }).click();
+    await page.locator('.task-input').fill(uniqueTaskName);
+    await page.locator('.task-add-btn').click();
 
-    // Isolate the specific row for our newly created task.
-    // getByText with exact match finds the <span>, locator('..') goes up to its parent <div> row.
-    const taskRow = page.getByText(uniqueTaskName, { exact: true }).locator('..');
+    // Find the task row that contains our unique task name
+    const taskRow = page.locator('.task-row', { hasText: uniqueTaskName });
 
     // Wait for the network request to finish and the task to appear
     await expect(taskRow).toBeVisible({ timeout: 10000 });
@@ -26,8 +24,7 @@ test.describe('Firebase Agent Task Manager', () => {
     // -----------------------------------------
     // TEST UPDATE (Complete)
     // -----------------------------------------
-    // Find the "Complete" button specifically inside our unique task's row
-    const completeBtn = taskRow.getByRole('button', { name: 'Complete' });
+    const completeBtn = taskRow.locator('.task-complete-btn');
     await completeBtn.click();
 
     // Verify it worked: The Complete button should disappear from the DOM
@@ -37,7 +34,7 @@ test.describe('Firebase Agent Task Manager', () => {
     // -----------------------------------------
     // TEST DELETE
     // -----------------------------------------
-    const deleteBtn = taskRow.getByRole('button', { name: 'Delete' });
+    const deleteBtn = taskRow.locator('.task-delete-btn');
     await deleteBtn.click();
 
     // Verify it successfully deleted from the screen

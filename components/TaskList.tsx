@@ -18,14 +18,14 @@ export default function TaskList({
   completeTask,
 }: Props) {
   return (
-    <div>
+    <div className="task-list">
       {tasks.map((task) => (
         <div
           key={task.id}
-          data-testid={`task-${task.title}`}
-          className="flex items-center gap-3 mb-3"
+          className="task-row flex items-center gap-3 mb-3"
         >
           <span
+            className="task-title"
             style={{
               textDecoration: task.completed
                 ? "line-through"
@@ -38,7 +38,7 @@ export default function TaskList({
           {!task.completed && (
             <button
               onClick={() => completeTask(task.id)}
-              className="border px-2"
+              className="task-complete-btn border px-2"
             >
               Complete
             </button>
@@ -46,7 +46,7 @@ export default function TaskList({
 
           <button
             onClick={() => deleteTask(task.id)}
-            className="border px-2"
+            className="task-delete-btn border px-2"
           >
             Delete
           </button>

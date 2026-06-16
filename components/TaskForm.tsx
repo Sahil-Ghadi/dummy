@@ -17,18 +17,18 @@ export default function TaskForm({ addTask }: Props) {
   };
 
   return (
-    <div className="flex gap-2 mb-5">
+    <div className="task-form flex gap-2 mb-5">
       <input
         type="text"
         placeholder="Enter Task"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
-        className="border p-2 rounded"
+        className="task-input border p-2 rounded"
       />
 
       <button
         onClick={handleSubmit}
-        className="border px-4 py-2 rounded"
+        className="task-add-btn border px-4 py-2 rounded"
       >
         Add
       </button>
