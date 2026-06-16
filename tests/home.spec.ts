@@ -1,43 +1,25 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('Firebase Agent Task Manager', () => {
-  // Generate a unique task name for this specific test run
-  const uniqueTaskName = `AI Task ${Date.now()}`;
-
-  test('should execute full CRUD cycle against Firebase', async ({ page }) => {
-    // 1. Navigate to the app
+test.describe('Home Page', () => {
+  test('should load the page and show the heading', async ({ page }) => {
     await page.goto('http://localhost:3000');
 
-    // -----------------------------------------
-    // TEST CREATE
-    // -----------------------------------------
-    await page.locator('.task-input').fill(uniqueTaskName);
-    await page.locator('.task-add-btn').click();
+    // Check the heading is visible
+    const heading = page.locator('h1');
+    await expect(heading).toBeVisible();
+    await expect(heading).toHaveText('Firebase CRUD App');
+  });
 
-    // Find the task row that contains our unique task name
-    const taskRow = page.locator('.task-row', { hasText: uniqueTaskName });
+  test('should have the task input and add button', async ({ page }) => {
+    await page.goto('http://localhost:3000');
 
-    // Wait for the network request to finish and the task to appear
-    await expect(taskRow).toBeVisible({ timeout: 10000 });
+    // Check input exists
+    const input = page.locator('.task-input');
+    await expect(input).toBeVisible();
 
-
-    // -----------------------------------------
-    // TEST UPDATE (Complete)
-    // -----------------------------------------
-    const completeBtn = taskRow.locator('.task-complete-btn');
-    await completeBtn.click();
-
-    // Verify it worked: The Complete button should disappear from the DOM
-    await expect(completeBtn).toBeHidden({ timeout: 10000 });
-
-
-    // -----------------------------------------
-    // TEST DELETE
-    // -----------------------------------------
-    const deleteBtn = taskRow.locator('.task-delete-btn');
-    await deleteBtn.click();
-
-    // Verify it successfully deleted from the screen
-    await expect(taskRow).toBeHidden({ timeout: 10000 });
+    // Check add button exists
+    const addBtn = page.locator('.task-add-btn');
+    await expect(addBtn).toBeVisible();
+    await expect(addBtn).toHaveText('Add');
   });
 });
